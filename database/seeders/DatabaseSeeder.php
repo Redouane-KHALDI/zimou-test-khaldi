@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Package;
+use App\Models\Store;
 use Illuminate\Database\Seeder;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+                WilayaSeeder::class,
+                CommuneSeeder::class,
+                PackageStatusSeeder::class,
+                DeliveryTypeSeeder::class,
+            ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $totalStores = 5000;
+        $packagesPerStore = 100;
+
+        Store::factory($totalStores)
+            ->has(Package::factory()->count($packagesPerStore))
+            ->create();
     }
 }
